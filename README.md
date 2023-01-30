@@ -14,8 +14,21 @@ Execute the following command to install dependencies
 yarn install
 ```
 
-#### Create config files 
-Use development_sample.json​ and docker-compose-example.yml​ as templates to create your own **development.json​** and **docker-compose.yml**
+### Creating config files 
+Use **development.json​.example** and **docker-compose.yml.example**​ as templates to create your own **development.json​** and **docker-compose.yml**
+
+In your **development.json**, replace the placeholders in the following lines with your own fake values
+```
+3,5,6,7,8,9
+```
+
+In your **docker-compose.yml**, replace the placeholders in the following lines with your own fake values
+```
+12,48,55,56,57,63,65,66
+```
+Be careful to confirm that the port numbers and credentials in docker-compose.yml match the port numbers and credentials in development.json
+
+For example: YOUR_DB_USER in line 8 of development.json should match YOUR_DB_USER in line 57 of docker-compose.yml
 
 ### Running the app
 Build and run the Docker containers configured in your docker-compose.yml file
@@ -74,6 +87,7 @@ class CustomersController {
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : JSON.stringify(e);
       next(ApiError.internal(message));
+      return;
     }
   }
 }

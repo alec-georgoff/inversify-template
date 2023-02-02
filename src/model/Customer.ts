@@ -9,6 +9,7 @@ import Pet from "./Pet";
 // A dependency cycle should not happen because of the way the class is registered in the container
 // eslint-disable-next-line import/no-cycle
 import Purchase from "./Purchase";
+import Gift from "./Gift";
 
 // Note that as of TypeScript 4.9, classes can extend interfaces, but not types.
 // This rule is okay to disable because all we're doing is making an interface from a type.
@@ -43,6 +44,15 @@ class Customer extends BaseModel {
         join: {
           from: "customers.id",
           to: "purchases.customerId",
+        },
+      },
+
+      Gift: {
+        relation: Model.HasOneRelation,
+        modelClass: Gift,
+        join: {
+          from: "customers.id",
+          to: "gifts.customerId",
         },
       },
     };

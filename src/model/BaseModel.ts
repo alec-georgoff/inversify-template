@@ -22,24 +22,8 @@ class BaseModel extends Model {
     this.customValidate();
   }
 
-  async $afterInsert(queryContext: QueryContext) {
-    await super.$afterInsert(queryContext);
-    this.customValidate();
-  }
-
   async $beforeUpdate(opt: ModelOptions, queryContext: QueryContext) {
     await super.$beforeUpdate(opt, queryContext);
-    this.customValidate();
-  }
-
-  async $afterUpdate(opt: ModelOptions, queryContext: QueryContext) {
-    await super.$afterUpdate(opt, queryContext);
-    this.customValidate();
-  }
-
-  // this gets called after a truncate query too
-  async $afterFind(queryContext: QueryContext) {
-    await super.$afterFind(queryContext);
     this.customValidate();
   }
 }

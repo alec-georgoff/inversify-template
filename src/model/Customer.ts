@@ -1,13 +1,14 @@
 import { injectable } from "inversify";
-import path from "path";
-import { fileURLToPath } from "url";
 import { Model } from "objection";
 import { z } from "zod";
 import BaseModel from "./BaseModel";
 import schema from "../schema/customerSchema";
-
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+// A dependency cycle should not happen because of the way the class is registered in the container
+// eslint-disable-next-line import/no-cycle
+import Pet from "./Pet";
+// A dependency cycle should not happen because of the way the class is registered in the container
+// eslint-disable-next-line import/no-cycle
+import Purchase from "./Purchase";
 
 // Note that as of TypeScript 4.9, classes can extend interfaces, but not types.
 // This rule is okay to disable because all we're doing is making an interface from a type.
@@ -29,7 +30,7 @@ class Customer extends BaseModel {
     return {
       Pet: {
         relation: Model.HasManyRelation,
-        modelClass: path.join(dirname, "Pet"),
+        modelClass: Pet,
         join: {
           from: "customers.id",
           to: "pets.ownerId",
@@ -38,7 +39,7 @@ class Customer extends BaseModel {
 
       Purchase: {
         relation: Model.HasManyRelation,
-        modelClass: path.join(dirname, "Purchase"),
+        modelClass: Purchase,
         join: {
           from: "customers.id",
           to: "purchases.customerId",

@@ -18,6 +18,26 @@ class CustomersController {
       next(ApiError.internal(message));
     }
   };
+
+  public assignGift = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this._service.assignGift(req.params["customerId"]); // type safety here?
+      res.status(200).json(result);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : JSON.stringify(e);
+      next(ApiError.internal(message));
+    }
+  }
+
+  public getCustomersWithPetsAndGifts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this._service.getCustomersWithPetsAndGifts();
+      res.status(200).json(result);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : JSON.stringify(e);
+      next(ApiError.internal(message));
+    }
+  };
 }
 
 export default CustomersController;

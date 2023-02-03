@@ -3,7 +3,7 @@ import sinon, { SinonStubbedInstance } from "sinon";
 import CustomersDAO from "../../../dao/customers/CustomersDAO";
 import CustomersService from "../CustomersService";
 import { v4 as uuidv4 } from 'uuid';
-import Customer from "../../../model/Customer";
+import Customer, { FullCustomer } from "../../../model/Customer";
 import { Model, QueryBuilder } from "objection";
 import Pet from "../../../model/Pet";
 import Gift from "../../../model/Gift";
@@ -28,7 +28,7 @@ describe("src :: service :: customers :: CustomersService", () => {
     beforeEach(() => {
         dao = sandbox.createStubInstance(CustomersDAO);
         subclassService = new SubclassService(dao);
-        
+
         // prepare customer
         customer = new Customer();
         const id = uuidv4();
@@ -77,7 +77,7 @@ describe("src :: service :: customers :: CustomersService", () => {
                 it("assignGift returns null", async () => {
                     // arrange
                     const queryResult = {...customer, Pet: [pet], Purchase: [oldPurchase], Gift: gift};
-                    dao.getFullCustomer.resolves(queryResult as unknown as Customer & { Pet: Pet[], Purchase: Purchase[], Gift: Gift | undefined });
+                    dao.getFullCustomer.resolves(queryResult as FullCustomer);
                     // act
                     const result = await subclassService.assignGift(customer.id);
                     // assert
@@ -90,8 +90,8 @@ describe("src :: service :: customers :: CustomersService", () => {
             context("when the customer has no pets", () => {
                 it("assignGift returns null", async () => {
                     // arrange
-                    const queryResult = {...customer, Pet: [], Purchase: [oldPurchase], Gift: undefined};
-                    dao.getFullCustomer.resolves(queryResult as unknown as Customer & { Pet: Pet[], Purchase: Purchase[], Gift: Gift | undefined });
+                    const queryResult = {...customer, Pet: [] as Pet[], Purchase: [oldPurchase], Gift: undefined};
+                    dao.getFullCustomer.resolves(queryResult as FullCustomer);
                     // act
                     const result = await subclassService.assignGift(customer.id);
                     // assert
@@ -105,7 +105,7 @@ describe("src :: service :: customers :: CustomersService", () => {
                 it("assignGift returns null", async () => {
                     // arrange
                     const queryResult = {...customer, Pet: [pet], Purchase: [recentPurchase], Gift: undefined};
-                    dao.getFullCustomer.resolves(queryResult as unknown as Customer & { Pet: Pet[], Purchase: Purchase[], Gift: Gift | undefined });
+                    dao.getFullCustomer.resolves(queryResult as FullCustomer);
                     // act
                     const result = await subclassService.assignGift(customer.id);
                     // assert
@@ -119,7 +119,7 @@ describe("src :: service :: customers :: CustomersService", () => {
                 it("assignGift returns a gift", async () => {
                     // arrange
                     const queryResult = {...customer, Pet: [pet], Purchase: [oldPurchase], Gift: undefined};
-                    dao.getFullCustomer.resolves(queryResult as unknown as Customer & { Pet: Pet[], Purchase: Purchase[], Gift: Gift | undefined });
+                    dao.getFullCustomer.resolves(queryResult as FullCustomer);
                     dao.assignGiftToCustomer.resolves(gift);
                     // act
                     const result = await subclassService.assignGift(customer.id);

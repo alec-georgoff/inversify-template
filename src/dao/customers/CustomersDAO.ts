@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import Customer from "../../model/Customer";
+import Customer, { FullCustomer } from "../../model/Customer";
 import Gift from "../../model/Gift";
 import Pet from "../../model/Pet";
 import Purchase from "../../model/Purchase";
@@ -22,7 +22,7 @@ class CustomersDAO extends DAO<Customer> {
       .withGraphFetched('Gift')
       .withGraphFetched('Purchase');
     console.log(result);
-    return result as Customer & { Pet: Pet[], Purchase: Purchase[], Gift: Gift | undefined }; // update typing?
+    return result as FullCustomer;
   }
 
   async assignGiftToCustomer(id: string, giftType: string) {

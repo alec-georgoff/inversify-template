@@ -60,3 +60,9 @@ class Customer extends BaseModel {
 }
 
 export default Customer;
+
+export interface FullCustomer extends Customer {
+  Pet: Pet[];
+  Purchase: Purchase[];
+  Gift: Gift | undefined;
+}

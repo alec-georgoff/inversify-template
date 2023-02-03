@@ -27,16 +27,6 @@ class CustomersController {
       const message = e instanceof Error ? e.message : JSON.stringify(e);
       next(ApiError.internal(message));
     }
-  }
-
-  public getCustomersWithPetsAndGifts = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await this._service.getCustomersWithPetsAndGifts();
-      res.status(200).json(result);
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : JSON.stringify(e);
-      next(ApiError.internal(message));
-    }
   };
 }
 

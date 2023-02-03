@@ -1,8 +1,5 @@
 import { inject, injectable } from "inversify";
 import Customer, { FullCustomer } from "../../model/Customer";
-import Gift from "../../model/Gift";
-import Pet from "../../model/Pet";
-import Purchase from "../../model/Purchase";
 import DAO from "../base-classes/DAO";
 
 @injectable()
@@ -15,13 +12,11 @@ class CustomersDAO extends DAO<Customer> {
   }
 
   async getFullCustomer(id: string) {
-    console.log(`attempting query for customer ${id}...`);
     const result = await this.model.query()
       .findById(id)
       .withGraphFetched('Pet')
       .withGraphFetched('Gift')
       .withGraphFetched('Purchase');
-    console.log(result);
     return result as FullCustomer;
   }
 
@@ -29,12 +24,6 @@ class CustomersDAO extends DAO<Customer> {
     const customer = await this.model.query().findById(id);
     if (!customer) return null;
     const result = await customer.$relatedQuery('Gift').insert({ type: giftType });
-    return result;
-  }
-
-  async getCustomersWithPetsAndGifts() {
-    const result = await this.model.query().withGraphFetched('Pet').withGraphFetched('Gift');
-    console.log(result);
     return result;
   }
 }

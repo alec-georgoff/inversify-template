@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import Service from "../base-classes/Service";
 import CustomersDAO from "../../dao/customers/CustomersDAO";
 import Customer from "../../model/Customer";
+import Gift from "../../model/Gift";
 
 @injectable()
 class CustomersService extends Service<Customer> {
@@ -32,7 +33,7 @@ class CustomersService extends Service<Customer> {
     // assign gift given date via DAO
     const result = await this._customersDAO.assignGiftToCustomer(customerId, `${pet.species}_gift`);
     // return pet type (as string for now)
-    return result;
+    return result === null ? null : result as Gift;
   }
 
   async getCustomersWithPetsAndGifts() {

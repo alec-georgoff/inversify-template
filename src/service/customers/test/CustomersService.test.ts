@@ -4,7 +4,6 @@ import CustomersDAO from "../../../dao/customers/CustomersDAO";
 import CustomersService from "../CustomersService";
 import { v4 as uuidv4 } from 'uuid';
 import Customer, { FullCustomer } from "../../../model/Customer";
-import { Model, QueryBuilder } from "objection";
 import Pet from "../../../model/Pet";
 import Gift from "../../../model/Gift";
 import Purchase from "../../../model/Purchase";

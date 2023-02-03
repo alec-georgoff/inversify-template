@@ -10,8 +10,19 @@ class CustomersService extends Service<Customer> {
   }
 
   async assignGift(customerId: string) {
-    const customer = await this._customersDAO.getCustomerWithPet(customerId);
+    const customer = await this._customersDAO.getFullCustomer(customerId);
     if (!customer) return null;
+    const customerHasGift = !!customer.Gift;
+    const customerHasPets = customer.Pet.length > 0;
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const customerIsEligible = customer.Purchase.some(p => p.date.getTime() < sixMonthsAgo.getTime());
+    if (customerHasGift || !customerHasPets || !customerIsEligible) {
+      console.log(`customer has pets? ${customerHasPets}`);
+      console.log(`${customerHasGift ? 'customer already has a gift' : 'no gift yet, but...'}`);
+      console.log(`customer purchase date is ${customer.Purchase.map(p => p.date.toString())}`);
+      return null;
+    }
     console.log(`assigning to customer ${customer.id}...`);
     // pick pet randomly for gift
     const pets = customer.Pet;

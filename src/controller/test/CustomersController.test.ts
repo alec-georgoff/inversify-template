@@ -19,6 +19,7 @@ describe("src :: controller :: CustomersController", () => {
   beforeEach(() => {
     service = sandbox.createStubInstance(Service);
     service.getAll = sandbox.stub();
+    service.assignGift = sandbox.stub();
 
     controller = new Controller(service);
 
@@ -58,4 +59,30 @@ describe("src :: controller :: CustomersController", () => {
       });
     });
   });
+
+  describe("# assignGift", () => {
+    context("when there isn't an error", () => {
+      it("calls service.assignGift()", async () => {
+        // arrange
+        req = { params: {"customerId": "string"} };
+        // act
+        await controller.assignGift(req as Request, res as Response, next);
+        // assert
+        sandbox.assert.calledOnce(service.assignGift);
+      });
+    });
+
+    context("when there is an error", () => {
+      it("calls next with ApiError.internal", async () => {
+        // arrange
+        service.assignGift.rejects(new Error("error"));
+        req = { params: {"customerId": "string"} };
+        // act
+        await controller.assignGift(req as Request, res as Response, next);
+        // assert
+        sandbox.assert.calledOnce(next);
+        sandbox.assert.calledWith(next, sandbox.match.instanceOf(ApiError));
+      });
+    });
+  })
 });

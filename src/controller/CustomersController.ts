@@ -21,7 +21,7 @@ class CustomersController {
 
   public assignGift = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await this._service.assignGift(req.params["customerId"]); // type safety here?
+      const result = await this._service.assignGift(req.params["customerId"]);
       res.status(200).json(result);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : JSON.stringify(e);
